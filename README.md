@@ -1,4 +1,4 @@
-# movie-explorer
+# Movie Explorer
 
 ## Steps to run the Project
 
