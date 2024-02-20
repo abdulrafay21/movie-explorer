@@ -1,10 +1,24 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { NAVIGATION_ROUTES } from "../navigation/navigationRoutes";
+import { useSelector, useDispatch } from "react-redux";
+import { addtoFavorite, removeFavorite } from "../store/movies/moviesSlice";
 
 export const Movie = ({ movieData }) => {
   const navigation = useNavigation();
+
+  const favoriteMovies = useSelector((state) => state.movies.favoriteMovies);
+
+  const dispatch = useDispatch();
+
+  const checkIsFavorite = () => {
+    const index = favoriteMovies.findIndex(
+      (movie) => movie.id === movieData.id
+    );
+    return index !== -1;
+  };
+
   return (
     <TouchableOpacity
       style={styles.container}
@@ -23,11 +37,23 @@ export const Movie = ({ movieData }) => {
         <View>
           <Text style={styles.title}>{movieData.title}</Text>
           <Text style={styles.releaseDate}>
-            Release Date: {movieData.releaseDate}
+            Release Date: {movieData.release_date}
           </Text>
         </View>
-        <TouchableOpacity>
-          <Image source={require("../assets/favorite.png")} />
+        <TouchableOpacity
+          onPress={() =>
+            dispatch(
+              checkIsFavorite()
+                ? removeFavorite(movieData.id)
+                : addtoFavorite(movieData)
+            )
+          }
+        >
+          {checkIsFavorite() ? (
+            <Image source={require("../assets/favorite_filled.png")} />
+          ) : (
+            <Image source={require("../assets/favorite.png")} />
+          )}
         </TouchableOpacity>
       </View>
     </TouchableOpacity>

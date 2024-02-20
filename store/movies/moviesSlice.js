@@ -3,11 +3,23 @@ import axios from "axios";
 
 const initialState = {
   movies: [],
+  favoriteMovies: [],
 };
 
 const moviesSlice = createSlice({
   name: "Movies",
   initialState,
+  reducers: {
+    addtoFavorite: (state, action) => {
+      state.favoriteMovies.push(action.payload);
+    },
+    removeFavorite: (state, action) => {
+      const index = state.favoriteMovies.findIndex(
+        (movie) => movie.id === action.payload
+      );
+      state.favoriteMovies.splice(index, 1);
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getAllMovies.fulfilled, (state, action) => {
       state.movies.push(...action.payload);
@@ -43,6 +55,6 @@ export const getAllMovies = createAsyncThunk(
   }
 );
 
-export const { increment } = moviesSlice.actions;
+export const { addtoFavorite, removeFavorite } = moviesSlice.actions;
 
 export default moviesSlice.reducer;
