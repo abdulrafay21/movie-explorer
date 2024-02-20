@@ -1,25 +1,36 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { NAVIGATION_ROUTES } from "../navigation/navigationRoutes";
 
-export const Movie = ({ title, releaseDate, poster }) => {
+export const Movie = ({ movieData }) => {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() =>
+        navigation.navigate(NAVIGATION_ROUTES.MOVIE_DETAIL, { movieData })
+      }
+    >
       <Image
         source={{
-          uri: poster,
+          uri: `https://image.tmdb.org/t/p/original${movieData.backdrop_path}`,
         }}
+        resizeMode="stretch"
         style={styles.image}
       />
       <View style={styles.titleContainer}>
         <View>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.releaseDate}>Release Date: {releaseDate}</Text>
+          <Text style={styles.title}>{movieData.title}</Text>
+          <Text style={styles.releaseDate}>
+            Release Date: {movieData.releaseDate}
+          </Text>
         </View>
         <TouchableOpacity>
           <Image source={require("../assets/favorite.png")} />
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
