@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NAVIGATION_ROUTES } from "./navigationRoutes";
 import { MoviesList } from "../screens/MoviesList";
 import { MovieDetail } from "../screens/MovieDetail";
+import { FavoriteMovies } from "../screens/FavoriteMovies";
 
 export const Routes = () => {
   const Stack = createNativeStackNavigator();
@@ -20,6 +21,10 @@ export const Routes = () => {
         <Stack.Screen
           name={NAVIGATION_ROUTES.MOVIE_DETAIL}
           component={MovieDetail}
+        />
+        <Stack.Screen
+          name={NAVIGATION_ROUTES.FAVORITE_MOVIES}
+          component={FavoriteMovies}
         />
       </Stack.Navigator>
     </NavigationContainer>

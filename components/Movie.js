@@ -5,7 +5,7 @@ import { NAVIGATION_ROUTES } from "../navigation/navigationRoutes";
 import { useSelector, useDispatch } from "react-redux";
 import { addtoFavorite, removeFavorite } from "../store/movies/moviesSlice";
 
-export const Movie = ({ movieData }) => {
+export const Movie = ({ movieData, showFavoriteIcon = true }) => {
   const navigation = useNavigation();
 
   const favoriteMovies = useSelector((state) => state.movies.favoriteMovies);
@@ -40,21 +40,23 @@ export const Movie = ({ movieData }) => {
             Release Date: {movieData.release_date}
           </Text>
         </View>
-        <TouchableOpacity
-          onPress={() =>
-            dispatch(
-              checkIsFavorite()
-                ? removeFavorite(movieData.id)
-                : addtoFavorite(movieData)
-            )
-          }
-        >
-          {checkIsFavorite() ? (
-            <Image source={require("../assets/favorite_filled.png")} />
-          ) : (
-            <Image source={require("../assets/favorite.png")} />
-          )}
-        </TouchableOpacity>
+        {showFavoriteIcon && (
+          <TouchableOpacity
+            onPress={() =>
+              dispatch(
+                checkIsFavorite()
+                  ? removeFavorite(movieData.id)
+                  : addtoFavorite(movieData)
+              )
+            }
+          >
+            {checkIsFavorite() ? (
+              <Image source={require("../assets/favorite_filled.png")} />
+            ) : (
+              <Image source={require("../assets/favorite.png")} />
+            )}
+          </TouchableOpacity>
+        )}
       </View>
     </TouchableOpacity>
   );

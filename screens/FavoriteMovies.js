@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   View,
   SafeAreaView,
@@ -6,43 +6,32 @@ import {
   StyleSheet,
   FlatList,
   Text,
-  Image,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { Movie } from "../components/Movie";
-import { useSelector, useDispatch } from "react-redux";
-import { getAllMovies } from "../store/movies/moviesSlice";
-import { NAVIGATION_ROUTES } from "../navigation/navigationRoutes";
+import { useSelector } from "react-redux";
 
-export const MoviesList = ({ navigation }) => {
-  const dispatch = useDispatch();
-  const movies = useSelector((state) => state.movies.movies);
-
-  useEffect(() => {
-    dispatch(getAllMovies());
-  }, []);
+export const FavoriteMovies = ({ navigation }) => {
+  const favoriteMovies = useSelector((state) => state.movies.favoriteMovies);
 
   return (
     <View style={styles.wrapper}>
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle={"dark-content"} backgroundColor={"transparent"} />
         <View style={styles.headerContainer}>
-          <Text style={styles.moviesTitle}>Movies</Text>
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate(NAVIGATION_ROUTES.FAVORITE_MOVIES)
-            }
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
           >
-            <Image
-              style={styles.favoriteMoviesIcon}
-              source={require("../assets/bookmark.png")}
-            />
+            <Image source={require("../assets/left-arrow.png")} />
           </TouchableOpacity>
+          <Text style={styles.moviesTitle}>Favorite Movies</Text>
         </View>
         <FlatList
-          data={movies}
+          data={favoriteMovies}
           renderItem={({ item }) => {
-            return <Movie movieData={item} />;
+            return <Movie movieData={item} showFavoriteIcon={false} />;
           }}
           keyExtractor={(item, index) => `${item.id}_${index}`}
         />
@@ -64,7 +53,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     gap: 20,
-    justifyContent: "space-between",
     alignItems: "center",
   },
   moviesTitle: {
